@@ -20,6 +20,7 @@ import com.sambit.event.management.repository.UserRepository;
 import com.sambit.event.management.request.LoginRequest;
 import com.sambit.event.management.response.AuthResponse;
 import com.sambit.event.management.service.CustomUserDetailsImplementaion;
+import com.sambit.event.management.service.SubscriptionService;
 
 @RestController
 @RequestMapping("/auth")
@@ -33,6 +34,9 @@ public class AuthController {
 	
 	@Autowired
 	private CustomUserDetailsImplementaion customUserDetailsImplementation;
+	
+	@Autowired
+	private SubscriptionService subscriptionService;
 	
 	@PostMapping("/signup")
 	public ResponseEntity<AuthResponse> createUserHandler(@RequestBody User user) throws Exception
@@ -50,6 +54,8 @@ public class AuthController {
 		createdUser.setFullName(user.getFullName());
 		
 		User savedUser = userRepository.save(createdUser);
+		
+		subscriptionService.createSubscription(savedUser);
 		
 		Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
 		SecurityContextHolder.getContext().setAuthentication(authentication);
