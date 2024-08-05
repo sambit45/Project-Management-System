@@ -1,9 +1,11 @@
 package com.sambit.event.management.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class IssueDTO {
+	
 	
 	private Long id;
 	private String title;
@@ -12,8 +14,7 @@ public class IssueDTO {
 	private Long projectID;
 	private String priority;
 	private LocalDate dueDate;
-	private List<String> tags;
-	
+	private List<String> tags = new ArrayList<>();
 	private User assignee;
 	private Project project;
 	public IssueDTO() {
@@ -99,6 +100,7 @@ public class IssueDTO {
 				+ ", projectID=" + projectID + ", priority=" + priority + ", dueDate=" + dueDate + ", tags=" + tags
 				+ ", assignee=" + assignee + ", project=" + project + "]";
 	}
-
+	
+	
 	
 }

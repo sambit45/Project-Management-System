@@ -51,6 +51,7 @@ public class IssueController {
 		
 		Issue createdIssue = issueService.createIssue(issue, tokenUser);
 		IssueDTO issueDTO = new IssueDTO();
+		issueDTO.setId(createdIssue.getId());
 		issueDTO.setTitle(createdIssue.getTitle());
 		issueDTO.setDescription(createdIssue.getDescription());
 		issueDTO.setStatus(createdIssue.getStatus());

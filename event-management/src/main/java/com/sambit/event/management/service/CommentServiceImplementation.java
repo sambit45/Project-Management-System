@@ -63,7 +63,7 @@ public class CommentServiceImplementation implements CommentService{
 		if(userOptional.isEmpty())
 			throw new Exception("User not found");
 		
-		Comment comment = new Comment();
+		Comment comment = toDeleteComment.get();
 		User user = userOptional.get();
 		
 		if(comment.getUser().equals(user))
