@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -5,7 +6,6 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { MagnifyingGlassIcon, MixerHorizontalIcon } from '@radix-ui/react-icons';
-import React, { useState } from 'react';
 import ProjectCard from '../Project/ProjectCard';
 
 export const tags = [
@@ -13,7 +13,7 @@ export const tags = [
 ];
 
 const ProjectList = () => {
-
+  
     const[keyword,setKeyword] = useState("");
 
   const handleFilterChange = (section, value) => {

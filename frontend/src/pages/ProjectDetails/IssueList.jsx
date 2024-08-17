@@ -1,3 +1,4 @@
+
 import {
   Card,
   CardContent,
@@ -11,7 +12,8 @@ import { Button } from "@/components/ui/button";
 import { PlusIcon } from "@radix-ui/react-icons";
 import CreateIssueForm from "./CreateIssueForm";
 
-const IssueList = ({ title, status }) => {
+
+const IssueList = ({ title,status }) => {
   return (
     <div>
       <Dialog>
