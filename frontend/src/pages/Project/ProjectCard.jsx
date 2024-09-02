@@ -4,10 +4,9 @@ import { Card } from '@/components/ui/card';
 import {  DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { DropdownMenu, DropdownMenuContent } from '@radix-ui/react-dropdown-menu';
 import { DotFilledIcon, DotsVerticalIcon } from '@radix-ui/react-icons';
-import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
-const ProjectCard = () => {
+const ProjectCard = ({item}) => {
   const navigate=useNavigate();
   return (
     <Card className="p-5 w-full lg:max-w-3xl">
@@ -16,10 +15,10 @@ const ProjectCard = () => {
         <div className='flex justify-between'>
           <div className='flex items-center gap-5'>
             <h1 onClick={()=>navigate("/project/3")} className='cursor-pointer font-bold text-lg'>
-              Create ecommerce project
+              {item.name}
             </h1>
             <DotFilledIcon/>
-            <p className='text-sm text-gray-400'>fullstack</p>
+            <p className='text-sm text-gray-400'>{item.category}</p>
           </div>
           <div>
             <DropdownMenu>
@@ -45,7 +44,7 @@ const ProjectCard = () => {
           </p>
       </div>
         <div className='flex flex-wrap gap-2 items-center'>
-            {[1,1,1,1].map((item)=><Badge key={item} variant="outline">frontend</Badge>)}
+            {item.tags.map((tag)=><Badge key={tag} variant="outline">{tag}</Badge>)}
         </div>
       </div>
     </Card>

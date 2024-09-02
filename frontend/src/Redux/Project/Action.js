@@ -3,9 +3,9 @@ import { api } from '@/Config/api';
 
 export const fetchProjects = createAsyncThunk(
   'projects/fetchProjects',
-  async ({ category, tag }) => {
-    const queryParams = new URLSearchParams({ category, tag }).toString();
-    const data = await api(`/api/projects?${queryParams}`);
+  async () => {
+    // const queryParams = new URLSearchParams({ category, tag }).toString();
+    const data = await api("/api/projects");
     console.log('all projects', data);
     return data;
   }

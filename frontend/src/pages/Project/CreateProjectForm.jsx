@@ -15,29 +15,36 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { tags } from "../ProjectList/ProjectList";
 import { Cross1Icon } from "@radix-ui/react-icons";
+import { useDispatch } from "react-redux";
+import { createProjects } from "@/Redux/Project/Action";
+
 
 const CreateProjectForm = () => {
 
-    const handleTagsChange=(newValue)=>{
-      const currentTags = form.getValues("tags");
-      const updatedTags = currentTags.includes(newValue)?
-          currentTags.filter(tag=>tag!==newValue):[...currentTags,newValue];
-          form.setValue("tags",updatedTags);
-    }
+  const dispatch = useDispatch();
+
+  const handleTagsChange = (newValue) => {
+    const currentTags = form.getValues("tags");
+    const updatedTags = currentTags.includes(newValue)
+      ? currentTags.filter((tag) => tag !== newValue)
+      : [...currentTags, newValue];
+    form.setValue("tags", updatedTags);
+  };
 
   const form = useForm({
     defaultValues: {
       name: "",
       description: "",
+      category: "",
       tags: ["javascript", "react"],
     },
   });
 
   const onSubmit = (data) => {
+    dispatch(createProjects(data));
     console.log("Create project data", data);
   };
 
@@ -88,7 +95,7 @@ const CreateProjectForm = () => {
               <FormItem>
                 <FormControl>
                   <Select
-                    defaultValue="fullstack"
+                    defaultValue=""
                     value={field.value}
                     onValueChange={(value) => {
                       field.onChange(value);
@@ -136,10 +143,16 @@ const CreateProjectForm = () => {
                   </Select>
                 </FormControl>
                 <div className="flex gap-1 flex-wrap">
-                    { field.value.map((item)=> <div key={item} onClick={()=>handleTagsChange(item)} className="cursor-pointer flex rounded-full items-center border gap-2 px-4 py-1">
+                  {field.value.map((item) => (
+                    <div
+                      key={item}
+                      onClick={() => handleTagsChange(item)}
+                      className="cursor-pointer flex rounded-full items-center border gap-2 px-4 py-1"
+                    >
                       <span className="text-sm">{item}</span>
                       <Cross1Icon className="h-3 w-3" />
-                    </div>)}
+                    </div>
+                  ))}
                 </div>
                 <FormMessage />
               </FormItem>

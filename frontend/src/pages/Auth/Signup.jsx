@@ -17,8 +17,8 @@ const Signup = () => {
       });
     
       const onSubmit = (data) => {
-        console.log("Create project data", data);
         dispatch(register(data));
+        console.log("Create project data", data);
       };
   return (
     <div className="space-y-5">
