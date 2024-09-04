@@ -16,8 +16,8 @@ function App() {
   const auth = useSelector((store) => store.auth);
   useEffect(() => {
     dispatch(getUser());
-    dispatch(fetchProjects({}));
-  }, [auth.jwt],dispatch);
+    dispatch(fetchProjects([]));
+  }, [auth.jwt,dispatch]);
 
   console.log(auth);
   

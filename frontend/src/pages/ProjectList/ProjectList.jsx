@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,8 @@ import {
   MixerHorizontalIcon,
 } from "@radix-ui/react-icons";
 import ProjectCard from "../Project/ProjectCard";
-import {  useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProjects, searchProjects } from "@/Redux/Project/Action";
 
 export const tags = [
   "all",
@@ -30,14 +31,21 @@ export const tags = [
 
 const ProjectList = () => {
   const [keyword, setKeyword] = useState("");
-  const project = useSelector((store)=>store.projects);
-  console.log("Project store", project);
+  const dispatch = useDispatch();
+  const projects = useSelector((store) => store.project.projects);
+  const searchItems = useSelector((store) => store.project.searchProjects);
 
-  const handleFilterChange = (section, value) => {
-    console.log("value", value, section);
+  const handleFilterTags = (value) => {
+    if (value == "all") dispatch(fetchProjects({}));
+    else dispatch(fetchProjects({ tag: value }));
+  };
+  const handleFilterCategory = (value) => {
+    if (value == "all") dispatch(fetchProjects({}));
+    else dispatch(fetchProjects({ category: value }));
   };
   const handleSearchChange = (e) => {
     setKeyword(e.target.value);
+    dispatch(searchProjects(e.target.value));
   };
 
   return (
@@ -59,9 +67,7 @@ const ProjectList = () => {
                   <RadioGroup
                     className="space-y-3 pt-5"
                     defaultValue="all"
-                    onValueChange={(value) =>
-                      handleFilterChange("category", value)
-                    }
+                    onValueChange={(value) => handleFilterCategory(value)}
                   >
                     <div className="flex items-center gap-2">
                       <RadioGroupItem value="all" id="r1" />
@@ -89,7 +95,7 @@ const ProjectList = () => {
                   <RadioGroup
                     className="space-y-3 pt-5"
                     defaultValue="all"
-                    onValueChange={(value) => handleFilterChange("tag", value)}
+                    onValueChange={(value) => handleFilterTags(value)}
                   >
                     {tags.map((tag) => (
                       <div key={tag} className="flex items-center gap-2">
@@ -119,8 +125,10 @@ const ProjectList = () => {
         <div>
           <div className="space-y-5 min-h-[74vh]">
             {keyword
-              ? [1, 1, 1].map((item) => <ProjectCard key={item} />)
-              : project?.projects?.map((item) => (
+              ? searchItems?.map((item) => (
+                  <ProjectCard item={item} key={item.id + 100} />
+                ))
+              : projects?.map((item) => (
                   <ProjectCard key={item.id} item={item} />
                 ))}
           </div>

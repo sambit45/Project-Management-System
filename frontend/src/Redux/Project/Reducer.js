@@ -4,7 +4,7 @@ import {
   searchProjects,
   createProjects,
   fetchProjectById,
-  deleteProjects,
+  deleteProject,
   inviteToProject,
   acceptInvitation
 } from './Action' 
@@ -37,6 +37,7 @@ const projectSlice = createSlice({
         console.log("Fetched projects",action.payload);
         
         state.projects = action.payload;
+        console.log("Current -----",state.projects);
       })
       .addCase(fetchProjects.rejected, (state, action) => {
         state.loading = false;
@@ -50,6 +51,8 @@ const projectSlice = createSlice({
       .addCase(searchProjects.fulfilled, (state, action) => {
         state.loading = false;
         state.searchProjects = action.payload;
+        console.log("Searched project",state.searchProjects);
+        
       })
       .addCase(searchProjects.rejected, (state, action) => {
         state.loading = false;
@@ -85,15 +88,15 @@ const projectSlice = createSlice({
         state.error = action.payload;
       })
 
-      .addCase(deleteProjects.pending, (state) => {
+      .addCase(deleteProject.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(deleteProjects.fulfilled, (state, action) => {
+      .addCase(deleteProject.fulfilled, (state, action) => {
         state.loading = false;
         state.projects = state.projects.filter(project => project.id !== action.payload);
       })
-      .addCase(deleteProjects.rejected, (state, action) => {
+      .addCase(deleteProject.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

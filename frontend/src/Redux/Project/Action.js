@@ -3,9 +3,13 @@ import { api } from '@/Config/api';
 
 export const fetchProjects = createAsyncThunk(
   'projects/fetchProjects',
-  async () => {
-    // const queryParams = new URLSearchParams({ category, tag }).toString();
-    const data = await api("/api/projects");
+  async ({ category = '', tag = '' } = {}) => {
+    const queryParams = new URLSearchParams();
+    if (category) queryParams.append('category', category);
+    if (tag) queryParams.append('tag', tag);
+
+    const data = await api(`/api/projects?${queryParams.toString()}`);
+    
     console.log('all projects', data);
     return data;
   }
@@ -41,7 +45,7 @@ export const fetchProjectById = createAsyncThunk(
   }
 );
 
-export const deleteProjects = createAsyncThunk(
+export const deleteProject = createAsyncThunk(
   'projects/deleteProjects',
   async (projectId) => {
     const data = await api(`/api/projects/${projectId}`, {
