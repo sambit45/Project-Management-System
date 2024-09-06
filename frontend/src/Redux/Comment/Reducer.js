@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { createComment, deleteComment, fetchComments } from "./Action";
 
 const initialState = {
   comments: [],
@@ -9,60 +10,52 @@ const initialState = {
 const commentSlice = createSlice({
   name: "comments",
   initialState,
-  reducers: {
-    createCommentRequest: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    deleteCommentRequest: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    fetchCommentsRequest: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(createComment.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createComment.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log("from action.payload", action.payload);
+        state.comments.push(action.payload);
+        console.log("From state comments", state.comments);
+      })
+      .addCase(createComment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
 
-    createCommentSuccess: (state, action) => {
-      state.loading = false;
-      state.comments.push(action.payload);
-    },
-    deleteCommentSuccess: (state, action) => {
-      state.loading = false;
-      state.comments = state.comments.filter(
-        (comment) => comment.id !== action.payload
-      );
-    },
-    fetchCommentsSuccess: (state, action) => {
-      state.loading = false;
-      state.comments = action.payload;
-    },
+      .addCase(fetchComments.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchComments.fulfilled, (state, action) => {
+        state.loading = false;
+        state.comments = action.payload;
+      })
+      .addCase(fetchComments.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
 
-    createCommentFailure: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    deleteCommentFailure: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    fetchCommentsFailure: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
+      .addCase(deleteComment.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteComment.fulfilled, (state, action) => {
+        state.loading = false;
+        state.comments = state.comments.filter(
+          (comment) => comment.id !== action.payload
+        );
+      })
+      .addCase(deleteComment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
-
-export const {
-  createCommentRequest,
-  deleteCommentRequest,
-  fetchCommentsRequest,
-  createCommentSuccess,
-  deleteCommentSuccess,
-  fetchCommentsSuccess,
-  createCommentFailure,
-  deleteCommentFailure,
-  fetchCommentsFailure,
-} = commentSlice.actions;
 
 export const commentReducer = commentSlice.reducer;

@@ -2,7 +2,9 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { TrashIcon } from "@radix-ui/react-icons";
 
-const CommentCard = () => {
+const CommentCard = ({item}) => {
+  console.log("From comment card",item);
+  
   return (
     <div className="flex justify-between ">
       <div className="flex items-center gap-4">
@@ -11,7 +13,7 @@ const CommentCard = () => {
         </Avatar>
         <div className="space-y-1">
           <p>Sambit</p>
-          <p>how much work is pending</p>
+          <p>{item.content}</p>
         </div>
         <Button className="rounded-full" variant="ghost" size="icon">
           <TrashIcon />

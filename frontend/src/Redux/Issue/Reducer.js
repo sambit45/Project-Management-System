@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  assignedUserToIssue,
+  assignIssueToUser,
   createIssue,
+  deleteIssue,
   fetchIssueById,
   fetchIssues,
   updateIssueStatus,
@@ -63,7 +64,11 @@ const issueSlice = createSlice({
       })
       .addCase(updateIssueStatus.fulfilled, (state, action) => {
         state.loading = false;
-        state.issues = state.issues.map((issue) =>
+        console.log("state data",state);
+        
+        console.log("updateIssueStatus",action.payload);
+        
+        action.payload.issues = action.payload.issues.map((issue) =>
           issue.id === action.payload.id ? action.payload : issue
         );
       })
@@ -71,18 +76,36 @@ const issueSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-
-      .addCase(assignedUserToIssue.pending, (state) => {
+      .addCase(deleteIssue.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(assignedUserToIssue.fulfilled, (state, action) => {
+      .addCase(deleteIssue.fulfilled, (state, action) => {
+        console.log("From action.payload",action.payload);
+        
         state.loading = false;
+        state.issues = state.issues.filter(
+          (issue) => issue.id !== action.payload
+        );
+      })
+      .addCase(deleteIssue.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(assignIssueToUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(assignIssueToUser.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log("From assign issue to user reducer",action.payload.assignee.fullName);
+        
         state.issues = state.issues.map((issue) =>
           issue.id === action.payload.id ? action.payload : issue
         );
       })
-      .addCase(assignedUserToIssue.rejected, (state, action) => {
+      .addCase(assignIssueToUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

@@ -51,6 +51,7 @@ export const updateIssueStatus = createAsyncThunk(
       const data = await api(`/api/issues/${id}/status/${status}`, {
         method: "PUT",
       });
+      console.log("update issue data",data);
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -58,7 +59,25 @@ export const updateIssueStatus = createAsyncThunk(
   }
 );
 
-export const assignedUserToIssue = createAsyncThunk(
+export const deleteIssue = createAsyncThunk("issues/deleteIssue",
+  async (id,{rejectWithValue}) => {
+    console.log("Action id",id);
+    
+    try{
+      const data = await api(`/api/issues/${id}`,{
+        method: "DELETE",
+      });
+      console.log("Response data",data);
+      console.log("response id",id);
+      return id;
+    }
+    catch(error){
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const assignIssueToUser = createAsyncThunk(
   "issues/assignedUserToIssue",
   async ({ issueId, userId }, { rejectWithValue }) => {
     try {
