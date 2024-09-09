@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getUserSubscription, upgradeSubscription } from './Action'; // Make sure the path to the action file is correct
 
 const initialState = {
   userSubscription: null,
@@ -9,43 +10,37 @@ const initialState = {
 const subscriptionSlice = createSlice({
   name: 'subscription',
   initialState,
-  reducers: {
-    getUserSubscriptionRequest: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    getUserSubscriptionSuccess: (state, action) => {
-      state.loading = false;
-      state.userSubscription = action.payload;
-      state.error = null;
-    },
-    getUserSubscriptionFailure: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    upgradeSubscriptionRequest: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    upgradeSubscriptionSuccess: (state, action) => {
-      state.loading = false;
-      state.userSubscription = action.payload;
-      state.error = null;
-    },
-    upgradeSubscriptionFailure: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
+  reducers: {}, 
+  extraReducers: (builder) => {
+    builder
+      .addCase(getUserSubscription.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getUserSubscription.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userSubscription = action.payload;
+        state.error = null;
+      })
+      .addCase(getUserSubscription.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      
+      .addCase(upgradeSubscription.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(upgradeSubscription.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userSubscription = action.payload;
+        state.error = null;
+      })
+      .addCase(upgradeSubscription.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
-
-export const {
-  getUserSubscriptionRequest,
-  getUserSubscriptionSuccess,
-  getUserSubscriptionFailure,
-  upgradeSubscriptionRequest,
-  upgradeSubscriptionSuccess,
-  upgradeSubscriptionFailure,
-} = subscriptionSlice.actions;
 
 export const subscriptionReducer = subscriptionSlice.reducer;

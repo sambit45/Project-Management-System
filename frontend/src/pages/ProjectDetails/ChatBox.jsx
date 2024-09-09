@@ -2,41 +2,67 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  fetchChatByProjectId,
+  fetchChatMessages,
+  sendMessage,
+} from "@/Redux/Chat/Action";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 const ChatBox = () => {
+  const dispatch = useDispatch();
+  const auth = useSelector((store) => store.auth);
+  const chat = useSelector((store) => store.chat);
+  const { id } = useParams();
+  const [message, setMessage] = useState("");
 
-  const [message,setMessage]=useState("");
-  const handleSendMessage=()=>{
-    console.log("message",message);
-    
-  }
-  const handleMessageChange=(e)=>{
-    setMessage(e.target.value)
-  }
+  useEffect(() => {
+    dispatch(fetchChatByProjectId(id));
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchChatMessages(chat.chat?.id));
+  }, []);
+
+  const handleSendMessage = () => {
+    dispatch(
+      sendMessage({
+        senderId: auth.user?.id,
+        projectId: id,
+        content: message,
+      })
+    );
+    console.log("message", message);
+    setMessage("");
+  };
+  const handleMessageChange = (e) => {
+    setMessage(e.target.value);
+  };
 
   return (
     <div className="sticky">
       <div className="border rounded-lg">
         <h1 className="border-b p-5">Chat Box</h1>
         <ScrollArea className="h-[32rem] w-full p-5 flex gap-3 flex-col">
-          {[1, 1, 1, 1].map((item, index) =>
-            index % 2 == 0 ? (
+          {chat?.messages?.map((item, index) =>
+            item.sender.id !== auth.user.id ? (
               <div className="flex gap-2 mb-2 justify-start" key={item}>
                 <Avatar>
                   <AvatarFallback>S</AvatarFallback>
                 </Avatar>
                 <div className="space-y-2 py-2 px-5 border rounded-ss-2xl rounded-e-xl">
-                  <p>Sambit</p>
-                  <p className="text-gray-300">hello,how are you?</p>
+                  <p>{item.sender.fullName}</p>
+                  <p className="text-gray-300">{item.content}</p>
                 </div>
               </div>
             ) : (
               <div className="flex gap-2 mb-2 justify-end" key={item}>
                 <div className="space-y-2 py-2 px-5 border rounded-se-2xl rounded-s-xl">
-                  <p>Sambit</p>
-                  <p className="text-gray-300">hello,how are you?</p>
+                  <p>{item.sender.fullName}</p>
+                  <p className="text-gray-300">{item.content}</p>
                 </div>
                 <Avatar>
                   <AvatarFallback>S</AvatarFallback>
@@ -52,8 +78,13 @@ const ChatBox = () => {
             value={message}
             onChange={handleMessageChange}
           />
-          <Button onClick={handleSendMessage} className="absolute right-2 top-3 rounded-full" size="icon" variant="ghost">
-              <PaperPlaneIcon/>
+          <Button
+            onClick={handleSendMessage}
+            className="absolute right-2 top-3 rounded-full"
+            size="icon"
+            variant="ghost"
+          >
+            <PaperPlaneIcon />
           </Button>
         </div>
       </div>

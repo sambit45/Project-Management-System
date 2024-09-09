@@ -21,7 +21,7 @@ import { fetchProjectById } from "@/Redux/Project/Action";
 const ProjectDetails = () => {
   const dispatch = useDispatch();
   const projectDetails = useSelector((store) => store.project.projectDetails);
-  console.log("Project details=-== ", projectDetails);
+  console.log("Project details=== ", projectDetails);
 
   const { id } = useParams();
 

@@ -26,6 +26,7 @@ const IssueList = ({ title, status }) => {
   const { id } = useParams();
 
   const {issues} = useSelector((store) => store.issue);
+  
 
   useEffect(() => {
     dispatch(fetchIssues(id));
@@ -40,7 +41,7 @@ const IssueList = ({ title, status }) => {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {issues?.issues?.filter((issue)=>issue.status==status).map((item) => (
+              {issues?.filter((issue)=>issue.status==status).map((item) => (
                 <IssueCard item={item} projectID={id} key={item.id} />
               ))}
             </div>

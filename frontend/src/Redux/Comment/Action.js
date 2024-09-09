@@ -23,6 +23,8 @@ export const deleteComment = createAsyncThunk(
   async (commentId, { rejectWithValue }) => {
     try {
       await api(`/api/comments/${commentId}`, { method: "DELETE" });
+      console.log("Comment deleted with commentId",commentId);
+      
       return commentId;
     } catch (error) {
       console.log("error ", error);

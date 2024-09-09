@@ -9,6 +9,8 @@ export const sendMessage = createAsyncThunk(
                 method: "POST",
                 body: JSON.stringify(messageData),
             });
+            console.log("Chat created..",data);
+            
             return data;
         } catch (error) {
             return rejectWithValue(error.message);
@@ -16,11 +18,13 @@ export const sendMessage = createAsyncThunk(
     }
 );
 
-export const fetchChatByProject = createAsyncThunk(
+export const fetchChatByProjectId = createAsyncThunk(
     'chat/fetchChatByProject',
     async (projectId, { rejectWithValue }) => {
         try {
             const data = await api(`/api/projects/${projectId}/chat`);
+            console.log("Fetching chat by project id",data);
+            
             return data;
         } catch (error) {
             return rejectWithValue(error.message);
