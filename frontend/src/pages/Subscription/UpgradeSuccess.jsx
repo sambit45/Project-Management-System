@@ -32,9 +32,9 @@ const UpgradeSuccess = () => {
           <p className="text-xl">Plan Upgraded Successfully</p>
         </div>
         <div className="space-y-3">
-          <p className="text-green-500">start date : </p>
-          <p className="text-red-500">end date : </p>
-          <p className="">plan type : </p>
+          <p className="text-green-500">start date : {subscription.userSubscription?.subscriptionStartDate}</p>
+          <p className="text-red-500">end date : {subscription.userSubscription?.getSubscriptionEndDate}</p>
+          <p className="">plan type : {subscription.userSubscription?.planType}</p>
         </div>
         <Button onClick={() => navigate("/")}>Go to home</Button>
       </Card>
